@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('title');
             $table->string('original_title');
             $table->string('original_title_romanised');
+            $table->string('image');
+            $table->string('movie_banner');
             $table->text('description');
             $table->string('director');
             $table->string('producer');

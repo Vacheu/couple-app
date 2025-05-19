@@ -11,6 +11,8 @@ class Film extends Model
         'title',
         'original_title',
         'original_title_romanised',
+        'image',
+        'movie_banner',
         'description',
         'director',
         'producer',

@@ -4,6 +4,9 @@ use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use App\Livewire\GhibliFilm;
+use App\Livewire\GhibliFilmDetail;
+use App\Livewire\GhibliPersonDetail;
+use App\Livewire\GhibliSpeciesDetail;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,6 +26,10 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/ghibli', GhibliFilm::class)->middleware('auth')->name('ghibli');
+Route::get('/ghibli/{film}', GhibliFilmDetail::class)->middleware('auth')->name('ghibli.detail');
+Route::get('/person/{person}', GhibliPersonDetail::class)->middleware('auth')->name('ghibli.person');
+Route::get('/species/{species}', GhibliSpeciesDetail::class)->middleware('auth')->name('ghibli.species');
+
 
 
 require __DIR__.'/auth.php';

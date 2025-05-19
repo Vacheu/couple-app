@@ -28,6 +28,8 @@ class FilmSeeder extends Seeder
                 'title' => $filmData['title'],
                 'original_title' => $filmData['original_title'],
                 'original_title_romanised' => $filmData['original_title_romanised'],
+                'image' => $filmData['image'],
+                'movie_banner' => $filmData['movie_banner'],
                 'description' => $filmData['description'],
                 'director' => $filmData['director'],
                 'producer' => $filmData['producer'],

@@ -14,6 +14,7 @@ class Person extends Model
         'age',
         'eye_color',
         'hair_color',
+        'species_id'
 
 
     ];

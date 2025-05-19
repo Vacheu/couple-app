@@ -2,36 +2,43 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-use App\Models\Film;
 use App\Models\Person;
-use App\Models\Location;
-use App\Models\Species;
-use App\Models\Vehicle;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Database\Seeder;
 
 class PersonSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
-        //
+        $apiPeople = Http::get('https://ghibliapi.vercel.app/people')->json();
 
-        $response = Http::get('https://ghibliapi.vercel.app/people');
+        foreach ($apiPeople as $apiPerson) {
+            // 1) Récupère l'URL, ou null si elle n'existe pas
+            $speciesUrl = $apiPerson['species'] ?? null;
 
-        foreach ($response->json() as $personData) {
-            $person = Person::create([
-                'id' => $personData['id'],
-                'name' => $personData['name'],
-                'gender' => $personData['gender'],
-                'age' => $personData['age'],
-                'eye_color' => $personData['eye_color'],
-                'hair_color' => $personData['hair_color'],
+            // 2) Extrait l'UUID UNIQUEMENT si c'est valide, sinon null
+            if ($speciesUrl && Str::contains($speciesUrl, '/species/')) {
+                $speciesId = Str::afterLast($speciesUrl, '/');
+                // au cas où Str::afterLast renverrait '' :
+                $speciesId = $speciesId !== '' ? $speciesId : null;
+            } else {
+                $speciesId = null;
+            }
 
-            ]);
+            Person::updateOrCreate(
+                ['id' => $apiPerson['id']],
+                [
+                    'name'        => $apiPerson['name'],
+                    'gender'      => $apiPerson['gender'],
+                    'age'         => $apiPerson['age'],
+                    'eye_color'   => $apiPerson['eye_color'],
+                    'hair_color'  => $apiPerson['hair_color'],
+                    'species_id'  => $speciesId,  // ne sera jamais ''
+                ]
+            );
         }
     }
 }
+
+
